@@ -42,7 +42,7 @@ export const TabList = ({ tabs, selectedIds, setSelectedIds }: Props) => {
                         {`${selectedIds.length} selected`}
                     </Text>
                 </AccordionButton>
-                <AccordionPanel maxH="400px" overflowY="auto">
+                <AccordionPanel maxH="250px" overflowY="auto">
                     <CheckboxGroup onChange={setSelectedIds} value={selectedIds}>
                         {tabs.map((tab) => (
                             <Checkbox

@@ -80,30 +80,27 @@ export const Header = ({ tabs }: Props) => {
                         alignItems: "end",
                     }}
                 >
-                    <Box>
-                        <Input
-                            size="sm"
-                            value={filename}
-                            isInvalid={!filename}
-                            onChange={(e) => setFilename(e.target.value)}
-                            placeholder="Set filename"
-                            sx={{
-                                flex: 1,
-                                fontStyle: "italic",
-                                borderBottom: `1px solid ${colors.green700}`,
-                                _hover: {
-                                    boxShadow: "none",
-                                },
-                                _focus: {
-                                    boxShadow: "none",
-                                },
-                                _invalid: {
-                                    border: "none",
-                                    borderBottom: `1px solid ${colors.error}`,
-                                },
-                            }}
-                        />
-                    </Box>
+                    <Input
+                        size="sm"
+                        value={filename}
+                        isInvalid={!filename}
+                        onChange={(e) => setFilename(e.target.value)}
+                        placeholder="Set filename"
+                        sx={{
+                            fontStyle: "italic",
+                            borderBottom: `1px solid ${colors.green700}`,
+                            _hover: {
+                                boxShadow: "none",
+                            },
+                            _focus: {
+                                boxShadow: "none",
+                            },
+                            _invalid: {
+                                border: "none",
+                                borderBottom: `1px solid ${colors.error}`,
+                            },
+                        }}
+                    />
                     <Text fontSize={14} fontWeight="bold">
                         .csv
                     </Text>
@@ -115,7 +112,7 @@ export const Header = ({ tabs }: Props) => {
                             color: colors.error,
                             paddingLeft: "12px",
                             paddingTop: "4px",
-                            fontStyle: "italic",
+                            fontWeight: "700",
                         }}
                     >
                         please enter a valid filename
