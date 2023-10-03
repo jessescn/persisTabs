@@ -1,5 +1,5 @@
-import { Box, Heading, Icon, IconButton } from "@chakra-ui/react"
-import React, { useCallback, useMemo, useRef } from "react"
+import { Box, Heading, Icon, IconButton, Input, Text } from "@chakra-ui/react"
+import React, { useCallback, useMemo, useRef, useState } from "react"
 import { MdCloudDownload, MdCloudUpload } from "react-icons/md"
 import { colors } from "./style/colors"
 import { Tab } from "./types/Tab"
@@ -11,6 +11,8 @@ type Props = {
 }
 
 export const Header = ({ tabs }: Props) => {
+    const [filename, setFilename] = useState("tabs")
+
     const urls = useMemo(() => {
         return getTabsAttribute(tabs, "url") as string[]
     }, [tabs])
@@ -18,18 +20,24 @@ export const Header = ({ tabs }: Props) => {
     const inputRef = useRef<HTMLInputElement>(null)
 
     const handleDownload = useCallback(async () => {
+        if (!filename) {
+            return
+        }
+
         const content = urls.join("\n")
-        downloadFile(content)
-    }, [urls])
+        downloadFile(content, filename)
+    }, [urls, filename])
 
     const handleImport = async (event: React.ChangeEvent<HTMLInputElement>) => {
         if (!event.target.files) return
 
-        for (const file in event.target.files) {
+        const promises = Array.from(event.target.files).map(async (file) => {
             const content = await readFileAsync(file as unknown as Blob)
             const urls = content.split("\n")
             await openMultipleTabsByUrls(urls)
-        }
+        })
+
+        await Promise.all(promises)
     }
 
     const triggerInput = () => {
@@ -37,32 +45,83 @@ export const Header = ({ tabs }: Props) => {
     }
 
     return (
-        <Box className="flex" justifyContent="space-between" alignItems="center">
-            <Heading fontSize={24} color={colors.green700}>
-                PersisTabs
-            </Heading>
-            <Box className="flex" gap="12px">
-                <IconButton
-                    bgColor={colors.green700}
-                    color={colors.white}
-                    _hover={{ bgColor: colors.green700 }}
-                    boxShadow="xl"
-                    aria-label="download icon button"
-                    onClick={handleDownload}
-                    isDisabled={!urls.length}
-                    icon={<Icon as={MdCloudDownload} />}
-                />
-                <IconButton
-                    bgColor={colors.green700}
-                    color={colors.white}
-                    _hover={{ bgColor: colors.green700 }}
-                    boxShadow="xl"
-                    aria-label="upload icon button"
-                    onClick={triggerInput}
-                    icon={<Icon as={MdCloudUpload} />}
-                />
-                <input onChange={handleImport} ref={inputRef} id="import-input" type="file" />
+        <>
+            <Box className="flex" justifyContent="space-between" alignItems="center">
+                <Heading fontSize={24} color={colors.green700}>
+                    PersisTabs
+                </Heading>
+                <Box className="flex" gap="12px">
+                    <IconButton
+                        bgColor={colors.green700}
+                        color={colors.white}
+                        _hover={{ bgColor: colors.green700 }}
+                        boxShadow="xl"
+                        aria-label="download icon button"
+                        onClick={handleDownload}
+                        isDisabled={!urls.length || !filename}
+                        icon={<Icon as={MdCloudDownload} />}
+                    />
+                    <IconButton
+                        bgColor={colors.green700}
+                        color={colors.white}
+                        _hover={{ bgColor: colors.green700 }}
+                        boxShadow="xl"
+                        aria-label="upload icon button"
+                        onClick={triggerInput}
+                        icon={<Icon as={MdCloudUpload} />}
+                    />
+                    <input onChange={handleImport} ref={inputRef} id="import-input" type="file" />
+                </Box>
             </Box>
-        </Box>
+            <Box>
+                <Box
+                    style={{
+                        display: "flex",
+                        alignItems: "end",
+                    }}
+                >
+                    <Box>
+                        <Input
+                            size="sm"
+                            value={filename}
+                            isInvalid={!filename}
+                            onChange={(e) => setFilename(e.target.value)}
+                            placeholder="Set filename"
+                            sx={{
+                                flex: 1,
+                                fontStyle: "italic",
+                                borderBottom: `1px solid ${colors.green700}`,
+                                _hover: {
+                                    boxShadow: "none",
+                                },
+                                _focus: {
+                                    boxShadow: "none",
+                                },
+                                _invalid: {
+                                    border: "none",
+                                    borderBottom: `1px solid ${colors.error}`,
+                                },
+                            }}
+                        />
+                    </Box>
+                    <Text fontSize={14} fontWeight="bold">
+                        .csv
+                    </Text>
+                </Box>
+                {!filename && (
+                    <Text
+                        style={{
+                            fontSize: "10px",
+                            color: colors.error,
+                            paddingLeft: "12px",
+                            paddingTop: "4px",
+                            fontStyle: "italic",
+                        }}
+                    >
+                        please enter a valid filename
+                    </Text>
+                )}
+            </Box>
+        </>
     )
 }

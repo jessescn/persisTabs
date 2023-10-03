@@ -7,4 +7,6 @@ export const colors = {
     brown100: "#A37B73",
 
     yellow100: "#F3DE8A",
+
+    error: "#B9314F",
 }
