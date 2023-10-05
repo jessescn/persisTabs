@@ -1,4 +1,4 @@
-import { Box, Icon, IconButton } from "@chakra-ui/react"
+import { Box, Icon, Link } from "@chakra-ui/react"
 import React, { PropsWithChildren, useEffect, useState } from "react"
 import { BsGithub } from "react-icons/bs"
 import { Container, Content } from "./components"
@@ -6,79 +6,11 @@ import { Header } from "./Header"
 import { TabFilters } from "./TabFilters"
 import { TabList } from "./TabList"
 import { Tab } from "./types/Tab"
-import { getTabsAttribute, loadOpenedTabs } from "./utils/tabs"
+import { DEV_MODE } from "./utils/constants"
+import { getTabsAttribute, loadOpenedTabs, sortTabsByUrl } from "./utils/tabs"
 
 const WINDOW_HEIGHT = 600
 const WINDOW_WIDTH = 300
-
-const mock = [
-    {
-        id: 1,
-        incognito: true,
-        title: "teste",
-        highlighted: false,
-    },
-    {
-        id: 2,
-        incognito: false,
-        title: "Command not found with new Hyper install 2.1.0 · Issue #3349 · vercel/hyper",
-        highlighted: false,
-    },
-    {
-        id: 2,
-        incognito: false,
-        title: "Command not found with new Hyper install 2.1.0 · Issue #3349 · vercel/hyper",
-        highlighted: false,
-    },
-    {
-        id: 2,
-        incognito: false,
-        title: "Command not found with new Hyper install 2.1.0 · Issue #3349 · vercel/hyper",
-        highlighted: false,
-    },
-    {
-        id: 2,
-        incognito: false,
-        title: "Command not found with new Hyper install 2.1.0 · Issue #3349 · vercel/hyper",
-        highlighted: false,
-    },
-    {
-        id: 2,
-        incognito: false,
-        title: "Command not found with new Hyper install 2.1.0 · Issue #3349 · vercel/hyper",
-        highlighted: false,
-    },
-    {
-        id: 2,
-        incognito: false,
-        title: "Command not found with new Hyper install 2.1.0 · Issue #3349 · vercel/hyper",
-        highlighted: false,
-    },
-    {
-        id: 2,
-        incognito: false,
-        title: "Command not found with new Hyper install 2.1.0 · Issue #3349 · vercel/hyper",
-        highlighted: false,
-    },
-    {
-        id: 2,
-        incognito: false,
-        title: "Command not found with new Hyper install 2.1.0 · Issue #3349 · vercel/hyper",
-        highlighted: false,
-    },
-    {
-        id: 2,
-        incognito: false,
-        title: "Command not found with new Hyper install 2.1.0 · Issue #3349 · vercel/hyper",
-        highlighted: false,
-    },
-    {
-        id: 2,
-        incognito: false,
-        title: "Command not found with new Hyper install 2.1.0 · Issue #3349 · vercel/hyper",
-        highlighted: false,
-    },
-]
 
 const Wrapper = ({ children }: PropsWithChildren) => {
     return (
@@ -87,8 +19,6 @@ const Wrapper = ({ children }: PropsWithChildren) => {
         </Box>
     )
 }
-
-const DEV_MODE = process.env.NODE_ENV === "development"
 
 function App() {
     const [tabs, setTabs] = useState<Tab[]>([])
@@ -101,17 +31,13 @@ function App() {
     }, [filteredTabs])
 
     useEffect(() => {
-        if (DEV_MODE) {
-            setTabs(mock)
-            setFilteredTabs(mock)
-        } else {
-            loadOpenedTabs().then((values) => {
-                setTabs(values)
-                setFilteredTabs(values)
-                const ids = getTabsAttribute(values, "id") as number[]
-                setSelectedIds(ids.map(String))
-            })
-        }
+        loadOpenedTabs().then((values) => {
+            values.sort(sortTabsByUrl)
+            setTabs(values)
+            setFilteredTabs(values)
+            const ids = getTabsAttribute(values, "id") as number[]
+            setSelectedIds(ids.map(String))
+        })
     }, [])
 
     const content = (
@@ -134,12 +60,9 @@ function App() {
                     justifyContent: "center",
                 }}
             >
-                <IconButton
-                    aria-label="github icon link"
-                    variant="unstyled"
-                    onClick={() => (window.location.href = "https://github.com")}
-                    icon={<Icon fontSize={24} as={BsGithub} color="#fff" />}
-                />
+                <Link target="blank" href="https://github.com/jessescn">
+                    <Icon fontSize={24} as={BsGithub} color="#fff" />
+                </Link>
             </Box>
         </Container>
     )

@@ -53,7 +53,7 @@ export const TabFilters = ({ setFilteredTabs, tabs }: Props) => {
                         Filters
                     </Text>
                 </AccordionButton>
-                <AccordionPanel display="flex">
+                <AccordionPanel display="flex" gap={4}>
                     <CheckboxGroup
                         value={filters}
                         onChange={(e) => setFilters(e as FilterOption[])}
@@ -73,6 +73,21 @@ export const TabFilters = ({ setFilteredTabs, tabs }: Props) => {
                                 Incognito
                             </Text>
                         </Checkbox>
+                        {/* <Checkbox
+                            borderColor={colors.green700}
+                            size="sm"
+                            value="onlyIncognito"
+                            _checked={{
+                                "& .chakra-checkbox__control": {
+                                    borderColor: colors.green700,
+                                    background: colors.green700,
+                                },
+                            }}
+                        >
+                            <Text fontWeight={700} fontSize={12}>
+                                Incognito
+                            </Text>
+                        </Checkbox> */}
                     </CheckboxGroup>
                 </AccordionPanel>
             </AccordionItem>

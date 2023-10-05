@@ -1,8 +1,9 @@
-import { Box, Heading, Icon, IconButton, Input, Text } from "@chakra-ui/react"
+import { Box, Heading, Icon, IconButton, Input, Text, Tooltip } from "@chakra-ui/react"
 import React, { useCallback, useMemo, useRef, useState } from "react"
 import { MdCloudDownload, MdCloudUpload } from "react-icons/md"
 import { colors } from "./style/colors"
 import { Tab } from "./types/Tab"
+import { DEV_MODE } from "./utils/constants"
 import { downloadFile, readFileAsync } from "./utils/file"
 import { getTabsAttribute, openMultipleTabsByUrls } from "./utils/tabs"
 
@@ -49,27 +50,36 @@ export const Header = ({ tabs }: Props) => {
             <Box className="flex" justifyContent="space-between" alignItems="center">
                 <Heading fontSize={24} color={colors.green700}>
                     PersisTabs
+                    {DEV_MODE && (
+                        <Text fontSize={8} fontWeight="bold" color={colors.green700}>
+                            on DEVELOPMENT MODE
+                        </Text>
+                    )}
                 </Heading>
                 <Box className="flex" gap="12px">
-                    <IconButton
-                        bgColor={colors.green700}
-                        color={colors.white}
-                        _hover={{ bgColor: colors.green700 }}
-                        boxShadow="xl"
-                        aria-label="download icon button"
-                        onClick={handleDownload}
-                        isDisabled={!urls.length || !filename}
-                        icon={<Icon as={MdCloudDownload} />}
-                    />
-                    <IconButton
-                        bgColor={colors.green700}
-                        color={colors.white}
-                        _hover={{ bgColor: colors.green700 }}
-                        boxShadow="xl"
-                        aria-label="upload icon button"
-                        onClick={triggerInput}
-                        icon={<Icon as={MdCloudUpload} />}
-                    />
+                    <Tooltip label="Download tabs">
+                        <IconButton
+                            bgColor={colors.green700}
+                            color={colors.white}
+                            _hover={{ bgColor: colors.green700 }}
+                            boxShadow="xl"
+                            aria-label="download icon button"
+                            onClick={handleDownload}
+                            isDisabled={!urls.length || !filename}
+                            icon={<Icon as={MdCloudDownload} />}
+                        />
+                    </Tooltip>
+                    <Tooltip label="Import tabs">
+                        <IconButton
+                            bgColor={colors.green700}
+                            color={colors.white}
+                            _hover={{ bgColor: colors.green700 }}
+                            boxShadow="xl"
+                            aria-label="upload icon button"
+                            onClick={triggerInput}
+                            icon={<Icon as={MdCloudUpload} />}
+                        />
+                    </Tooltip>
                     <input onChange={handleImport} ref={inputRef} id="import-input" type="file" />
                 </Box>
             </Box>
