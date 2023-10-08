@@ -13,12 +13,9 @@ type Props = {
 
 export const Header = ({ tabs }: Props) => {
     const [filename, setFilename] = useState("tabs")
-
-    const urls = useMemo(() => {
-        return getTabsAttribute(tabs, "url") as string[]
-    }, [tabs])
-
     const inputRef = useRef<HTMLInputElement>(null)
+
+    const urls = getTabsAttribute(tabs, "url") as string[]
 
     const handleDownload = useCallback(async () => {
         if (!filename) {

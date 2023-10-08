@@ -1,4 +1,4 @@
-export type Tab = {
+export interface Tab {
     id?: number
     title?: string
     url?: string

@@ -24,7 +24,7 @@ type Props = {
 }
 
 export const TabList = ({ tabs, selectedIds, setSelectedIds }: Props) => {
-    const isAllSelected = tabs.length === selectedIds.length
+    const isAllTabsSelected = tabs.length === selectedIds.length
 
     const handleSelectAll = useCallback(() => {
         const allIds = tabs.filter((tab) => tab.id).map((tab) => String(tab.id)) as string[]
@@ -32,9 +32,11 @@ export const TabList = ({ tabs, selectedIds, setSelectedIds }: Props) => {
         setSelectedIds(allIds)
     }, [setSelectedIds, tabs])
 
-    const handleUnselectAll = useCallback(() => {
+    const handleDeselectAll = useCallback(() => {
         setSelectedIds([])
     }, [setSelectedIds])
+
+    const buttonLabel = isAllTabsSelected ? "deselect all" : "select all"
 
     return (
         <>
@@ -43,9 +45,9 @@ export const TabList = ({ tabs, selectedIds, setSelectedIds }: Props) => {
                 _hover={{ bgColor: colors.green700, color: colors.white }}
                 bgColor={colors.green700}
                 color={colors.white}
-                onClick={isAllSelected ? handleUnselectAll : handleSelectAll}
+                onClick={isAllTabsSelected ? handleDeselectAll : handleSelectAll}
             >
-                {isAllSelected ? "deselect all" : "select all"}
+                {buttonLabel}
             </Button>
             <Accordion allowToggle defaultIndex={[0]}>
                 <AccordionItem>

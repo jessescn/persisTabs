@@ -16,13 +16,12 @@ type Props = TagProps & {
     setFilters: (values: any) => void
 }
 
-export const FiltersTag = ({ label, filters, setFilters, excludeLabel, ...props }: Props) => {
-    const hasAtLeastOne = filters.includes(excludeLabel) || filters.includes(label)
+export const FiltersTag = ({ label, filters, setFilters, excludeLabel, ...tagProps }: Props) => {
+    const isExcluding = filters.includes(excludeLabel)
+    const isIncluding = filters.includes(label)
+    const hasAtLeastOne = isExcluding || isIncluding
 
-    const getNewFilters = useCallback(() => {
-        const isExcluding = filters.includes(excludeLabel)
-        const isIncluding = filters.includes(label)
-
+    const onSelect = useCallback(() => {
         let newFilters = filters
 
         if (!isExcluding && !isIncluding) {
@@ -34,18 +33,10 @@ export const FiltersTag = ({ label, filters, setFilters, excludeLabel, ...props 
             newFilters = newFilters.filter((e) => ![label, excludeLabel].includes(e))
         }
 
-        return newFilters
-    }, [excludeLabel, filters, label])
+        setFilters(newFilters)
+    }, [excludeLabel, filters, isExcluding, isIncluding, label, setFilters])
 
-    const onSelect = useCallback(() => {
-        setFilters(getNewFilters())
-    }, [getNewFilters, setFilters])
-
-    const icon = filters.includes(label)
-        ? AiOutlinePlus
-        : filters.includes(excludeLabel)
-        ? AiOutlineMinus
-        : null
+    const icon = isIncluding ? AiOutlinePlus : isExcluding ? AiOutlineMinus : null
 
     return (
         <ChakraTag
@@ -54,7 +45,7 @@ export const FiltersTag = ({ label, filters, setFilters, excludeLabel, ...props 
             color={hasAtLeastOne ? colors.white : colors.green700}
             bgColor={hasAtLeastOne ? colors.green700 : colors.white}
             onClick={onSelect}
-            {...props}
+            {...tagProps}
         >
             {icon && <ChakraTagLeftIcon color={colors.white} as={icon} />}
             <ChakraTagLabel>{label}</ChakraTagLabel>

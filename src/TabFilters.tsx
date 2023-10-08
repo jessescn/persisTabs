@@ -9,11 +9,8 @@ import {
 import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { FiltersTag } from "./components"
 import { colors } from "./style/colors"
+import { FilterHandler, FilterOption, Tag } from "./types/Filters"
 import { Tab } from "./types/Tab"
-
-type FilterOption = "incognito" | "exclude-incognito"
-
-type FilterHandler = (tabs: Tab[]) => Tab[]
 
 type Props = {
     tabs: Tab[]
@@ -44,7 +41,7 @@ export const TabFilters = ({ setFilteredTabs, tabs }: Props) => {
         setFilteredTabs(newFilteredTabs)
     }, [filters, getFilteredTabsWithHandlers, setFilteredTabs, tabs.length])
 
-    const tags = [
+    const tags: Tag[] = [
         {
             label: "incognito",
             excludeLabel: "exclude-incognito",
