@@ -2,6 +2,7 @@ import { Box, Icon, Link } from "@chakra-ui/react"
 import React, { PropsWithChildren, useEffect, useState } from "react"
 import { BsGithub } from "react-icons/bs"
 import { Container, Content } from "./components"
+import { Footer } from "./Footer"
 import { Header } from "./Header"
 import { TabFilters } from "./TabFilters"
 import { TabList } from "./TabList"
@@ -51,19 +52,7 @@ function App() {
                     tabs={filteredTabs}
                 />
             </Content>
-            <Box
-                style={{
-                    position: "absolute",
-                    bottom: "12px",
-                    width: "100%",
-                    display: "flex",
-                    justifyContent: "center",
-                }}
-            >
-                <Link target="blank" href="https://github.com/jessescn">
-                    <Icon fontSize={24} as={BsGithub} color="#fff" />
-                </Link>
-            </Box>
+            <Footer />
         </Container>
     )
 
