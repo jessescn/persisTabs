@@ -14,10 +14,10 @@ import { Tab } from "./types/Tab"
 
 type Props = {
     tabs: Tab[]
-    setFilteredTabs: (tabs: Tab[]) => void
+    setTabs: (tabs: Tab[]) => void
 }
 
-export const TabFilters = ({ setFilteredTabs, tabs }: Props) => {
+export const TabFilters = ({ setTabs, tabs }: Props) => {
     const [filters, setFilters] = useState<FilterOption[]>([])
 
     const handlers: Record<FilterOption, FilterHandler> = useMemo(
@@ -28,18 +28,16 @@ export const TabFilters = ({ setFilteredTabs, tabs }: Props) => {
         []
     )
 
-    const getFilteredTabsWithHandlers = useCallback(() => {
+    const getFilteredTabs = useCallback(() => {
         return filters.reduce((current, filter) => {
-            const handler = handlers[filter]
-
-            return handler(current)
+            return handlers[filter](current)
         }, tabs)
     }, [filters, handlers, tabs])
 
     useEffect(() => {
-        const newFilteredTabs = getFilteredTabsWithHandlers()
-        setFilteredTabs(newFilteredTabs)
-    }, [filters, getFilteredTabsWithHandlers, setFilteredTabs, tabs.length])
+        const newFilteredTabs = getFilteredTabs()
+        setTabs(newFilteredTabs)
+    }, [filters, getFilteredTabs, setTabs, tabs.length])
 
     const tags: Tag[] = [
         {

@@ -1,6 +1,5 @@
-import { Box, Icon, Link } from "@chakra-ui/react"
+import { Box } from "@chakra-ui/react"
 import React, { PropsWithChildren, useEffect, useState } from "react"
-import { BsGithub } from "react-icons/bs"
 import { Container, Content } from "./components"
 import { Footer } from "./Footer"
 import { Header } from "./Header"
@@ -8,7 +7,7 @@ import { TabFilters } from "./TabFilters"
 import { TabList } from "./TabList"
 import { Tab } from "./types/Tab"
 import { DEV_MODE } from "./utils/constants"
-import { getTabsAttribute, loadOpenedTabs, sortTabsByUrl } from "./utils/tabs"
+import { getAttribute, loadOpenedTabs } from "./utils/tabs"
 
 const WINDOW_HEIGHT = 600
 const WINDOW_WIDTH = 300
@@ -27,25 +26,24 @@ function App() {
     const [selectedIds, setSelectedIds] = useState<string[]>([])
 
     useEffect(() => {
-        const filteredTabsIds = getTabsAttribute(filteredTabs, "id") as number[]
-        setSelectedIds((prev) => prev.filter((value) => filteredTabsIds.includes(Number(value))))
+        const filteredTabsIds = getAttribute<Tab, number>(filteredTabs, "id").map(String)
+        setSelectedIds(filteredTabsIds)
     }, [filteredTabs])
 
     useEffect(() => {
-        loadOpenedTabs().then((values) => {
-            values.sort(sortTabsByUrl)
-            setTabs(values)
-            setFilteredTabs(values)
-            const ids = getTabsAttribute(values, "id") as number[]
-            setSelectedIds(ids.map(String))
+        loadOpenedTabs().then((chromeTabs) => {
+            setTabs(chromeTabs)
+            setFilteredTabs(chromeTabs)
         })
     }, [])
 
     const content = (
         <Container $height={WINDOW_HEIGHT} $width={WINDOW_WIDTH}>
             <Content boxShadow="dark-lg">
-                <Header tabs={filteredTabs} />
-                <TabFilters tabs={tabs} setFilteredTabs={setFilteredTabs} />
+                <Header
+                    tabs={filteredTabs.filter((tab) => selectedIds.includes(String(tab.id)))}
+                />
+                <TabFilters tabs={tabs} setTabs={setFilteredTabs} />
                 <TabList
                     selectedIds={selectedIds}
                     setSelectedIds={setSelectedIds}

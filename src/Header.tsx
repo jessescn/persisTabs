@@ -1,11 +1,11 @@
 import { Box, Heading, Icon, IconButton, Input, Text, Tooltip } from "@chakra-ui/react"
-import React, { useCallback, useMemo, useRef, useState } from "react"
+import React, { useCallback, useRef, useState } from "react"
 import { MdCloudDownload, MdCloudUpload } from "react-icons/md"
 import { colors } from "./style/colors"
 import { Tab } from "./types/Tab"
 import { DEV_MODE } from "./utils/constants"
 import { downloadFile, readFileAsync } from "./utils/file"
-import { getTabsAttribute, openMultipleTabsByUrls } from "./utils/tabs"
+import { getAttribute, openMultipleTabsByUrls } from "./utils/tabs"
 
 type Props = {
     tabs: Tab[]
@@ -15,16 +15,16 @@ export const Header = ({ tabs }: Props) => {
     const [filename, setFilename] = useState("tabs")
     const inputRef = useRef<HTMLInputElement>(null)
 
-    const urls = getTabsAttribute(tabs, "url") as string[]
+    const tabUrls = getAttribute<Tab, string>(tabs, "url")
 
     const handleDownload = useCallback(async () => {
         if (!filename) {
             return
         }
 
-        const content = urls.join("\n")
+        const content = tabUrls.join("\n")
         downloadFile(content, filename)
-    }, [urls, filename])
+    }, [tabUrls, filename])
 
     const handleImport = async (event: React.ChangeEvent<HTMLInputElement>) => {
         if (!event.target.files) return
@@ -62,7 +62,7 @@ export const Header = ({ tabs }: Props) => {
                             boxShadow="xl"
                             aria-label="download icon button"
                             onClick={handleDownload}
-                            isDisabled={!urls.length || !filename}
+                            isDisabled={!tabUrls.length || !filename}
                             icon={<Icon as={MdCloudDownload} />}
                         />
                     </Tooltip>

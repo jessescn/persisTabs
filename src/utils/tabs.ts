@@ -90,17 +90,19 @@ const openMultipleTabsByUrls = async (urls: string[]) => {
 const loadOpenedTabs = async () => {
     if (DEV_MODE || !chrome?.tabs) return mockTabs
 
-    return chrome.tabs.query({})
+    const chromeTabs = await chrome.tabs.query({})
+
+    return chromeTabs.sort(sortTabsByUrl)
 }
 
-const getTabsAttribute = (tabs: Tab[], attribute: keyof Tab) => {
-    return tabs.reduce((current, tab) => {
-        if (tab[attribute]) {
-            return [...current, tab[attribute]]
+const getAttribute = <T, K>(objs: T[], attribute: keyof T) => {
+    return objs.reduce((current, obj) => {
+        if (obj[attribute]) {
+            return [...current, obj[attribute]] as K[]
         }
 
         return current
-    }, [] as any[])
+    }, [] as K[])
 }
 
 const sortTabsByUrl = (tab1: Tab, tab2: Tab) => {
@@ -111,4 +113,4 @@ const sortTabsByUrl = (tab1: Tab, tab2: Tab) => {
     return tab1.url.localeCompare(tab2.url)
 }
 
-export { openMultipleTabsByUrls, loadOpenedTabs, getTabsAttribute, sortTabsByUrl }
+export { openMultipleTabsByUrls, loadOpenedTabs, getAttribute }

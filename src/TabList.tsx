@@ -11,6 +11,7 @@ import {
     Icon,
     Image,
     Text,
+    Tooltip,
 } from "@chakra-ui/react"
 import React, { useCallback } from "react"
 import { BsIncognito } from "react-icons/bs"
@@ -27,9 +28,9 @@ export const TabList = ({ tabs, selectedIds, setSelectedIds }: Props) => {
     const isAllTabsSelected = tabs.length === selectedIds.length
 
     const handleSelectAll = useCallback(() => {
-        const allIds = tabs.filter((tab) => tab.id).map((tab) => String(tab.id)) as string[]
+        const everyTabIds = tabs.filter((tab) => tab.id).map((tab) => String(tab.id)) as string[]
 
-        setSelectedIds(allIds)
+        setSelectedIds(everyTabIds)
     }, [setSelectedIds, tabs])
 
     const handleDeselectAll = useCallback(() => {
@@ -91,14 +92,16 @@ export const TabList = ({ tabs, selectedIds, setSelectedIds }: Props) => {
                                             alt="tab icon"
                                             fallbackSrc="https://via.placeholder.com/15"
                                         />
-                                        <Text
-                                            color={colors.green700}
-                                            fontWeight={700}
-                                            fontSize={12}
-                                            noOfLines={2}
-                                        >
-                                            {tab.title}
-                                        </Text>
+                                        <Tooltip label={tab.title}>
+                                            <Text
+                                                color={colors.green700}
+                                                fontWeight={700}
+                                                fontSize={12}
+                                                noOfLines={1}
+                                            >
+                                                {tab.title}
+                                            </Text>
+                                        </Tooltip>
                                         {tab.incognito && (
                                             <Icon
                                                 as={BsIncognito}
