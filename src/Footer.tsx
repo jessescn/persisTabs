@@ -13,7 +13,7 @@ export const Footer = () => {
                 justifyContent: "center",
             }}
         >
-            <Link target="blank" href="https://github.com/jessescn">
+            <Link target="blank" href="https://github.com/jessescn/persisTabs">
                 <Icon fontSize={24} as={BsGithub} color="#fff" />
             </Link>
         </Box>

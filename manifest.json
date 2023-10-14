@@ -1,9 +1,12 @@
 {
     "version": "0.0.1",
     "manifest_version": 3,
-    "name": "PersisTabs React",
-    "description": "This is a Chrome extension built with React and TypeScript",
+    "name": "PersisTabs",
+    "description": "Manage your infinite list of tabs easily",
     "permissions": ["tabs"],
+    "icons": {
+        "128": "icon128.png"
+    },
     "action": {
         "default_popup": "js/index.html",
         "default_title": "PersisTabs - React"

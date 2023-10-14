@@ -17,6 +17,7 @@ import React, { useCallback } from "react"
 import { BsIncognito } from "react-icons/bs"
 import { colors } from "./style/colors"
 import { Tab } from "./types/Tab"
+import { getAttribute } from "./utils/tabs"
 
 type Props = {
     tabs: Tab[]
@@ -28,7 +29,7 @@ export const TabList = ({ tabs, selectedIds, setSelectedIds }: Props) => {
     const isAllTabsSelected = tabs.length === selectedIds.length
 
     const handleSelectAll = useCallback(() => {
-        const everyTabIds = tabs.filter((tab) => tab.id).map((tab) => String(tab.id)) as string[]
+        const everyTabIds = getAttribute<Tab, number>(tabs, "id").map(String)
 
         setSelectedIds(everyTabIds)
     }, [setSelectedIds, tabs])

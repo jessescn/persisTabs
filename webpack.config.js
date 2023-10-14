@@ -1,32 +1,30 @@
-const path = require("path");
-const HTMLPlugin = require("html-webpack-plugin");
+const path = require("path")
+const HTMLPlugin = require("html-webpack-plugin")
 const CopyPlugin = require("copy-webpack-plugin")
 
 module.exports = {
     entry: {
-        index: "./src/index.tsx"
+        index: "./src/index.tsx",
     },
     mode: "production",
     module: {
         rules: [
             {
-              test: /\.tsx?$/,
-               use: [
-                 {
-                  loader: "ts-loader",
-                   options: {
-                     compilerOptions: { noEmit: false },
-                    }
-                  }],
-               exclude: /node_modules/,
+                test: /\.tsx?$/,
+                use: [
+                    {
+                        loader: "ts-loader",
+                        options: {
+                            compilerOptions: { noEmit: false },
+                        },
+                    },
+                ],
+                exclude: /node_modules/,
             },
             {
-              exclude: /node_modules/,
-              test: /\.css$/i,
-               use: [
-                  "style-loader",
-                  "css-loader"
-               ]
+                exclude: /node_modules/,
+                test: /\.css$/i,
+                use: ["style-loader", "css-loader"],
             },
         ],
     },
@@ -34,6 +32,7 @@ module.exports = {
         new CopyPlugin({
             patterns: [
                 { from: "manifest.json", to: "../manifest.json" },
+                { from: "public/icon128.png", to: "../icon128.png" },
             ],
         }),
         ...getHtmlPlugins(["index"]),
@@ -45,7 +44,7 @@ module.exports = {
         path: path.join(__dirname, "dist/js"),
         filename: "[name].js",
     },
-};
+}
 
 function getHtmlPlugins(chunks) {
     return chunks.map(
@@ -55,5 +54,5 @@ function getHtmlPlugins(chunks) {
                 filename: `${chunk}.html`,
                 chunks: [chunk],
             })
-    );
+    )
 }
