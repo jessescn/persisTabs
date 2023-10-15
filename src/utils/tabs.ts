@@ -71,6 +71,8 @@ const mockTabs: Tab[] = [
 ]
 
 const openMultipleTabsByUrls = async (urls: string[]) => {
+    if (!chrome?.tabs) return
+
     const promises: Promise<void>[] = []
 
     urls.forEach((url) => {

@@ -59,7 +59,7 @@ export const Header = ({ tabs }: Props) => {
                             bgColor={colors.green700}
                             color={colors.white}
                             _hover={{ bgColor: colors.green700 }}
-                            boxShadow="xl"
+                            boxShadow="dark-lg"
                             aria-label="download icon button"
                             onClick={handleDownload}
                             isDisabled={!tabUrls.length || !filename}
@@ -71,7 +71,7 @@ export const Header = ({ tabs }: Props) => {
                             bgColor={colors.green700}
                             color={colors.white}
                             _hover={{ bgColor: colors.green700 }}
-                            boxShadow="xl"
+                            boxShadow="dark-lg"
                             aria-label="upload icon button"
                             onClick={triggerInput}
                             icon={<Icon as={MdCloudUpload} />}

@@ -4,10 +4,13 @@ import {
     AccordionIcon,
     AccordionItem,
     AccordionPanel,
+    Box,
     Text,
 } from "@chakra-ui/react"
 import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { FiltersTag } from "./components"
+import { useIsAllowedIncognitoAccess } from "./hooks"
+import { IncognitoFeatureAlert } from "./IncognitoFeatureAlert"
 import { colors } from "./style/colors"
 import { FilterHandler, FilterOption, Tag } from "./types/Filters"
 import { Tab } from "./types/Tab"
@@ -18,6 +21,7 @@ type Props = {
 }
 
 export const TabFilters = ({ setTabs, tabs }: Props) => {
+    const { isAllowedIncognitoAccess } = useIsAllowedIncognitoAccess()
     const [filters, setFilters] = useState<FilterOption[]>([])
 
     const handlers: Record<FilterOption, FilterHandler> = useMemo(
@@ -43,31 +47,36 @@ export const TabFilters = ({ setTabs, tabs }: Props) => {
         {
             label: "incognito",
             excludeLabel: "exclude-incognito",
+            isDisabled: !isAllowedIncognitoAccess,
         },
     ]
 
     return (
-        <Accordion allowToggle defaultIndex={[0]}>
-            <AccordionItem>
-                <AccordionButton paddingX={0}>
-                    <AccordionIcon />
-                    <Text fontSize={14} color={colors.green700} fontWeight={700}>
-                        Filters
-                    </Text>
-                </AccordionButton>
-                <AccordionPanel display="flex" gap={4}>
-                    {tags.map((tag) => (
-                        <FiltersTag
-                            key={tag.label}
-                            size="sm"
-                            label={tag.label}
-                            excludeLabel={tag.excludeLabel}
-                            filters={filters}
-                            setFilters={setFilters}
-                        />
-                    ))}
-                </AccordionPanel>
-            </AccordionItem>
-        </Accordion>
+        <Box>
+            {!isAllowedIncognitoAccess && <IncognitoFeatureAlert />}
+            <Accordion allowToggle defaultIndex={[0]}>
+                <AccordionItem>
+                    <AccordionButton paddingX={0}>
+                        <AccordionIcon />
+                        <Text fontSize={14} color={colors.green700} fontWeight={700}>
+                            Filters
+                        </Text>
+                    </AccordionButton>
+                    <AccordionPanel display="flex" gap={4}>
+                        {tags.map((tag) => (
+                            <FiltersTag
+                                key={tag.label}
+                                size="sm"
+                                label={tag.label}
+                                isDisabled={tag.isDisabled}
+                                excludeLabel={tag.excludeLabel}
+                                filters={filters}
+                                setFilters={setFilters}
+                            />
+                        ))}
+                    </AccordionPanel>
+                </AccordionItem>
+            </Accordion>
+        </Box>
     )
 }
