@@ -1,11 +1,11 @@
 import { Box, Heading, Icon, IconButton, Input, Text, Tooltip } from "@chakra-ui/react"
 import React, { useCallback, useRef, useState } from "react"
 import { MdCloudDownload, MdCloudUpload } from "react-icons/md"
-import { colors } from "./style/colors"
-import { Tab } from "./types/Tab"
-import { DEV_MODE } from "./utils/constants"
-import { downloadFile, readFileAsync } from "./utils/file"
-import { getAttribute, openMultipleTabsByUrls } from "./utils/tabs"
+import { colors } from "../style/colors"
+import { Tab } from "../types/Tab"
+import { DEV_MODE } from "../utils/constants"
+import { downloadFile, readFileAsync } from "../utils/file"
+import { getAttribute, openMultipleTabsByUrls } from "../utils/tabs"
 
 type Props = {
     tabs: Tab[]

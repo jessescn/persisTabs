@@ -8,12 +8,12 @@ import {
     Text,
 } from "@chakra-ui/react"
 import React, { useCallback, useEffect, useMemo, useState } from "react"
-import { FiltersTag } from "./components"
-import { useIsAllowedIncognitoAccess } from "./hooks"
+import { FiltersTag } from "."
 import { IncognitoFeatureAlert } from "./IncognitoFeatureAlert"
-import { colors } from "./style/colors"
-import { FilterHandler, FilterOption, Tag } from "./types/Filters"
-import { Tab } from "./types/Tab"
+import { useIsAllowedIncognitoAccess } from "../hooks"
+import { colors } from "../style/colors"
+import { FilterHandler, FilterOption, Tag } from "../types/Filters"
+import { Tab } from "../types/Tab"
 
 type Props = {
     tabs: Tab[]

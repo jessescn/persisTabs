@@ -15,9 +15,9 @@ import {
 } from "@chakra-ui/react"
 import React, { useCallback } from "react"
 import { BsIncognito } from "react-icons/bs"
-import { colors } from "./style/colors"
-import { Tab } from "./types/Tab"
-import { getAttribute } from "./utils/tabs"
+import { colors } from "../style/colors"
+import { Tab } from "../types/Tab"
+import { getAttribute } from "../utils/tabs"
 
 type Props = {
     tabs: Tab[]

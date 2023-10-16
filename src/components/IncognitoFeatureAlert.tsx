@@ -2,9 +2,9 @@ import { Box, Icon, Text } from "@chakra-ui/react"
 import React from "react"
 
 import { AiOutlineWarning } from "react-icons/ai"
-import { colors } from "./style/colors"
-import { getChromeExtensionId } from "./utils/chromeApi"
-import { openMultipleTabsByUrls } from "./utils/tabs"
+import { colors } from "../style/colors"
+import { getChromeExtensionId } from "../utils/chromeApi"
+import { openMultipleTabsByUrls } from "../utils/tabs"
 
 export const IncognitoFeatureAlert = () => {
     const openExtensionsTab = async () => {
